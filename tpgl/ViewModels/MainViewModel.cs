@@ -2,6 +2,9 @@
 using System.ComponentModel;
 using tpgl.Helpers;
 using tpgl.Services;
+using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace tpgl.ViewModels
 {
@@ -20,7 +23,7 @@ namespace tpgl.ViewModels
 
                     if (this.PropertyChanged != null)
                     {
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("message"));
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("Message"));
                     }
                 }
             }
@@ -36,12 +39,19 @@ namespace tpgl.ViewModels
             this.Message += Helpers.Secrets.APIKey;
 
             this.tpgService = new TPGService(Secrets.APIKey, Secrets.APIEndpoint);
+        }
 
-            this.tpgService.GetStops().ContinueWith((stops) =>
+        public async Task LoadStops()
+        {
+            var stops = await this.tpgService.GetStops();
+
+            if (stops != null && stops.Stops != null && stops.Stops.Any())
             {
-                var res = stops.Result;
-                this.Message = "First stop is " + res.Stops[0].StopName;
-            });
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Message = stops.Stops.First().StopName;
+                });
+            }
         }
     }
 }
