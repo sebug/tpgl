@@ -1,5 +1,7 @@
 ﻿using System;
-namespace tpgl
+using System.Collections.Generic;
+
+namespace tpgl.Models
 {
     public class Stop
     {
@@ -9,5 +11,6 @@ namespace tpgl
 
         public string StopCode { get; set; }
         public string StopName { get; set; }
+        public List<Connection> Connections { get; set; }
     }
 }
