@@ -29,6 +29,7 @@ namespace tpgl.ViewModels
         public MainViewModel()
         {
             this.Message = "tpgl from the view model";
+            this.Message += Helpers.Secrets.APIKey;
         }
     }
 }
