@@ -67,6 +67,7 @@ namespace tpgl.ViewModels
                     {
                         this.Message = this.selectedStop.StopCode;
                     }
+                    this.SelectedStopChanged(this.selectedStop);
                 }
             }
         }
@@ -80,6 +81,21 @@ namespace tpgl.ViewModels
             this.Message = String.Empty;
 
             this.tpgService = DependencyService.Resolve<ITPGService>();
+        }
+
+        private void SelectedStopChanged(Stop s)
+        {
+            Task.Run(async () =>
+            {
+                var response = await this.tpgService.GetNextDepartures(s);
+                if (response != null && response.Departures != null)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        this.Message = "Found " + response.Departures.Count + " departures";
+                    });
+                }
+            });
         }
 
         public async Task LoadStops()

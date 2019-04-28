@@ -19,6 +19,18 @@ namespace tpgl.Services
             this.apiKey = Helpers.Secrets.APIKey;
         }
 
+        public async Task<GetNextDeparturesResponse> GetNextDepartures(Stop stop)
+        {
+            if (stop == null || stop.StopCode == null)
+            {
+                return null;
+            }
+            string nextDeparturesString = await this.client.GetStringAsync("GetNextDepartures?key=" +
+                this.apiKey + "&stopCode=" + stop.StopCode);
+            var nextDepartures = JsonConvert.DeserializeObject<GetNextDeparturesResponse>(nextDeparturesString);
+            return nextDepartures;
+        }
+
         public async Task<StopsResponse> GetStops()
         {
             string stopsResponse = await this.client.GetStringAsync("GetStops?key=" + this.apiKey);
