@@ -1,5 +1,6 @@
 ﻿using System;
 using tpgl.Services;
+using tpgl.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,6 +13,7 @@ namespace tpgl
             InitializeComponent();
 
             DependencyService.Register<ITPGService, TPGService>();
+            DependencyService.Register<MainViewModel>();
 
             MainPage = new MainPage();
         }

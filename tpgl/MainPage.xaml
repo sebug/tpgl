@@ -4,9 +4,6 @@
              xmlns:local="clr-namespace:tpgl"
              xmlns:localvms="clr-namespace:tpgl.ViewModels"
              x:Class="tpgl.MainPage">
-    <ContentPage.BindingContext>
-                    <localvms:MainViewModel />
-        </ContentPage.BindingContext>
     <StackLayout>
         <!-- Place new controls here -->
         <Label Text="{Binding Message}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">

@@ -36,7 +36,6 @@ namespace tpgl.ViewModels
         public MainViewModel()
         {
             this.Message = "tpgl from the view model";
-            this.Message += Helpers.Secrets.APIKey;
 
             this.tpgService = DependencyService.Resolve<ITPGService>();
         }
@@ -49,7 +48,7 @@ namespace tpgl.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.Message = "DI" + stops.Stops.First().StopName;
+                    this.Message = "DI3" + stops.Stops.First().StopName;
                 });
             }
         }

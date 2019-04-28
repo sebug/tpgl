@@ -17,6 +17,8 @@ namespace tpgl
         public MainPage()
         {
             InitializeComponent();
+
+            this.BindingContext = DependencyService.Resolve<MainViewModel>();
         }
 
         protected override void OnAppearing()
