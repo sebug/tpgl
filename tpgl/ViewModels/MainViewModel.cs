@@ -50,13 +50,34 @@ namespace tpgl.ViewModels
             }
         }
 
+        private Stop selectedStop;
+        public Stop SelectedStop
+        {
+            get { return this.selectedStop; }
+            set
+            {
+                if (this.selectedStop != value)
+                {
+                    this.selectedStop = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("SelectedStop"));
+                    }
+                    if (this.selectedStop != null)
+                    {
+                        this.Message = this.selectedStop.StopCode;
+                    }
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ITPGService tpgService;
 
         public MainViewModel()
         {
-            this.Message = "tpgl from the view model";
+            this.Message = String.Empty;
 
             this.tpgService = DependencyService.Resolve<ITPGService>();
         }
@@ -69,7 +90,6 @@ namespace tpgl.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.Message = "DI3" + stops.Stops.First().StopName;
                     this.Stops = new ObservableCollection<Stop>(stops.Stops);
                 });
             }
