@@ -26,6 +26,7 @@ namespace tpgl.Models
                 StringBuilder sb = new StringBuilder();
                 if (this.Line != null)
                 {
+                    sb.Append(this.Line.LineCode + " - ");
                     sb.Append(this.Line.DestinationName + " ");
                 }
                 sb.Append(this.WaitingTime);

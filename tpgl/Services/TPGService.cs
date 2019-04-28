@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using tpgl.Models;
+using System.Linq;
 
 namespace tpgl.Services
 {
@@ -35,6 +36,7 @@ namespace tpgl.Services
         {
             string stopsResponse = await this.client.GetStringAsync("GetStops?key=" + this.apiKey);
             var stops = JsonConvert.DeserializeObject<StopsResponse>(stopsResponse);
+            stops.Stops = stops.Stops.OrderBy(s => s.StopName).ToList();
             return stops;
         }
     }
