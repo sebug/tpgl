@@ -6,8 +6,14 @@
              x:Class="tpgl.MainPage">
     <StackLayout>
         <!-- Place new controls here -->
-        <Label Text="{Binding Message}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-            </Label>
+        <ListView ItemsSource="{Binding Departures}" Margin="0,20,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate> 
+                    <TextCell Text="{Binding ShortLineDisplay}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
         <Picker Title="Select a Stop..." ItemsSource="{Binding Stops}"
                 ItemDisplayBinding="{Binding StopName}"
                 SelectedItem="{Binding SelectedStop}"

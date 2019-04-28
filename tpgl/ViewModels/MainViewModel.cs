@@ -72,6 +72,23 @@ namespace tpgl.ViewModels
             }
         }
 
+        private ObservableCollection<Departure> departures = new ObservableCollection<Departure>();
+        public ObservableCollection<Departure> Departures
+        {
+            get { return this.departures; }
+            set
+            {
+                if (this.departures != value)
+                {
+                    this.departures = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("Departures"));
+                    }
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ITPGService tpgService;
@@ -93,6 +110,7 @@ namespace tpgl.ViewModels
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         this.Message = "Found " + response.Departures.Count + " departures";
+                        this.Departures = new ObservableCollection<Departure>(response.Departures);
                     });
                 }
             });

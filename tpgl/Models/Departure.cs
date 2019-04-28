@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+
 namespace tpgl.Models
 {
     public class Departure
@@ -16,5 +18,19 @@ namespace tpgl.Models
         public string VehiculeType { get; set; }
         public long? VehiculeNo { get; set; }
         public Line Line { get; set; }
+
+        public string ShortLineDisplay
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                if (this.Line != null)
+                {
+                    sb.Append(this.Line.DestinationName + " ");
+                }
+                sb.Append(this.WaitingTime);
+                return sb.ToString();
+            }
+        }
     }
 }
