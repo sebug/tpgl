@@ -11,11 +11,11 @@ namespace tpgl.Services
         private readonly string apiKey;
         private readonly HttpClient client;
 
-        public TPGService(string apiKey, string baseAddress)
+        public TPGService()
         {
             this.client = new HttpClient();
-            this.client.BaseAddress = new Uri(baseAddress);
-            this.apiKey = apiKey;
+            this.client.BaseAddress = new Uri(Helpers.Secrets.APIEndpoint);
+            this.apiKey = Helpers.Secrets.APIKey;
         }
 
         public async Task<StopsResponse> GetStops()

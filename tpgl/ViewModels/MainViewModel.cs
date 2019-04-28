@@ -38,7 +38,7 @@ namespace tpgl.ViewModels
             this.Message = "tpgl from the view model";
             this.Message += Helpers.Secrets.APIKey;
 
-            this.tpgService = new TPGService(Secrets.APIKey, Secrets.APIEndpoint);
+            this.tpgService = DependencyService.Resolve<ITPGService>();
         }
 
         public async Task LoadStops()
@@ -49,7 +49,7 @@ namespace tpgl.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.Message = stops.Stops.First().StopName;
+                    this.Message = "DI" + stops.Stops.First().StopName;
                 });
             }
         }

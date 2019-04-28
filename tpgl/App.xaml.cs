@@ -1,4 +1,5 @@
 ﻿using System;
+using tpgl.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,6 +10,8 @@ namespace tpgl
         public App()
         {
             InitializeComponent();
+
+            DependencyService.Register<ITPGService, TPGService>();
 
             MainPage = new MainPage();
         }
