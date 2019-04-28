@@ -8,9 +8,11 @@
         <!-- Place new controls here -->
         <Picker Title="Select a Stop..." ItemsSource="{Binding Stops}"
                 ItemDisplayBinding="{Binding StopName}"
-                
+                SelectedItem="{Binding SelectedStop}"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
                 />
-        <Label Text="{Binding Message}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+        <Label Text="{Binding Message}" HorizontalOptions="Center" VerticalOptions="End">
             </Label>
     </StackLayout>
 </ContentPage>
