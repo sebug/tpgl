@@ -14,7 +14,7 @@
             </ListView.ItemTemplate>
         </ListView>
         
-        <Picker Title="Select a Stop..." ItemsSource="{Binding Stops}"
+        <Picker Title="Select a Stop" ItemsSource="{Binding Stops}"
                 ItemDisplayBinding="{Binding StopName}"
                 SelectedItem="{Binding SelectedStop}"
                 VerticalOptions="End"
