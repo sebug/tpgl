@@ -15,6 +15,7 @@ namespace tpgl.Services
         {
             this.client = new HttpClient();
             this.client.BaseAddress = new Uri(Helpers.Secrets.APIEndpoint);
+            this.client.Timeout = TimeSpan.FromSeconds(20);
             this.apiKey = Helpers.Secrets.APIKey;
         }
 

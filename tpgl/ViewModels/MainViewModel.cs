@@ -84,14 +84,22 @@ namespace tpgl.ViewModels
 
         public async Task LoadStops()
         {
-            var stops = await this.tpgService.GetStops();
-
-            if (stops != null && stops.Stops != null && stops.Stops.Any())
+            try
             {
-                Device.BeginInvokeOnMainThread(() =>
+                var stopsResponse = await this.tpgService.GetStops();
+
+                if (stopsResponse != null && stopsResponse.Stops != null && stopsResponse.Stops.Any())
                 {
-                    this.Stops = new ObservableCollection<Stop>(stops.Stops);
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        this.Stops = new ObservableCollection<Stop>(stopsResponse.Stops);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                var bex = ex.GetBaseException();
+                this.Message = bex.Message;
             }
         }
     }

@@ -6,7 +6,7 @@
              x:Class="tpgl.MainPage">
     <StackLayout>
         <!-- Place new controls here -->
-        <Picker Title="Select a Stop" ItemsSource="{Binding Stops}"
+        <Picker Title="Select a Stop..." ItemsSource="{Binding Stops}"
                 ItemDisplayBinding="{Binding StopName}"
                 
                 />
