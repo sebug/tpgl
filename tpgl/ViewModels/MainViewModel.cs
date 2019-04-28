@@ -5,6 +5,8 @@ using tpgl.Services;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Collections.ObjectModel;
+using tpgl.Models;
 
 namespace tpgl.ViewModels
 {
@@ -24,6 +26,25 @@ namespace tpgl.ViewModels
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Message"));
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Stop> stops = new ObservableCollection<Stop>();
+
+        public ObservableCollection<Stop> Stops
+        {
+            get { return this.stops; }
+            set
+            {
+                if (this.stops != value)
+                {
+                    this.stops = value;
+
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("Stops"));
                     }
                 }
             }
@@ -49,6 +70,7 @@ namespace tpgl.ViewModels
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     this.Message = "DI3" + stops.Stops.First().StopName;
+                    this.Stops = new ObservableCollection<Stop>(stops.Stops);
                 });
             }
         }

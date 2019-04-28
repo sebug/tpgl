@@ -6,6 +6,9 @@
              x:Class="tpgl.MainPage">
     <StackLayout>
         <!-- Place new controls here -->
+        <Picker Title="Select a Stop" ItemsSource="{Binding Stops}"
+                ItemDisplayBinding="{Binding StopName}"
+                />
         <Label Text="{Binding Message}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
             </Label>
     </StackLayout>
