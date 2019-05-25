@@ -6,6 +6,8 @@ using tpgl.Models;
 using System.Linq;
 using Polly;
 using Xamarin.Forms;
+using Polly.Timeout;
+using System.Threading;
 
 namespace tpgl.Services
 {
@@ -51,11 +53,25 @@ namespace tpgl.Services
 
         public async Task<StopsResponse> GetStops()
         {
-            string stopsFromManifest = this._manifestResourceService.GetManifestResource("tpgl.Resources.stops.json");
-            string stopsResponse = await this.client.GetStringAsync("GetStops?key=" + this.apiKey);
-            var stops = JsonConvert.DeserializeObject<StopsResponse>(stopsResponse);
-            stops.Stops = stops.Stops.OrderBy(s => s.StopName).ToList();
-            return stops;
+            var timeoutPolicy = Policy.TimeoutAsync(2, TimeoutStrategy.Optimistic);
+            try
+            {
+                return await timeoutPolicy.ExecuteAsync<StopsResponse>(async ct =>
+                {
+                    var response = await this.client.GetAsync("GetStops?key=" + this.apiKey, ct);
+                    string stopsResponse = await response.Content.ReadAsStringAsync();
+                    var stops = JsonConvert.DeserializeObject<StopsResponse>(stopsResponse);
+                    stops.Stops = stops.Stops.OrderBy(s => s.StopName).ToList();
+                    return stops;
+                }, cancellationToken: CancellationToken.None);
+            }
+            catch
+            {
+                string stopsFromManifest = this._manifestResourceService.GetManifestResource("tpgl.Resources.stops.json");
+                var stops = JsonConvert.DeserializeObject<StopsResponse>(stopsFromManifest);
+                stops.Stops = stops.Stops.OrderBy(s => s.StopName).ToList();
+                return stops;
+            }
         }
     }
 }
