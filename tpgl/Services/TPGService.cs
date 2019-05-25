@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using tpgl.Models;
 using System.Linq;
+using Polly;
 
 namespace tpgl.Services
 {
@@ -26,9 +27,22 @@ namespace tpgl.Services
             {
                 return null;
             }
-            string nextDeparturesString = await this.client.GetStringAsync("GetNextDepartures?key=" +
-                this.apiKey + "&stopCode=" + stop.StopCode);
-            var nextDepartures = JsonConvert.DeserializeObject<GetNextDeparturesResponse>(nextDeparturesString);
+            var nextDepartures =
+                await Policy.Handle<HttpRequestException>(ex => !ex.Message.Contains("404"))
+                .WaitAndRetryAsync(retryCount: 3,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                onRetry: (ex, time) =>
+                {
+                    Console.WriteLine($"Something went wrong: {ex.Message}, retrying...");
+                })
+                .ExecuteAsync(async () =>
+                {
+                    Console.WriteLine("Trying to fetch remote data...");
+                    string nextDeparturesString = await this.client.GetStringAsync("GetNextDepartures?key=" +
+                        this.apiKey + "&stopCode=" + stop.StopCode);
+                    return JsonConvert.DeserializeObject<GetNextDeparturesResponse>(nextDeparturesString);
+                });
+            
             return nextDepartures;
         }
 
