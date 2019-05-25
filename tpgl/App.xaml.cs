@@ -12,6 +12,7 @@ namespace tpgl
         {
             InitializeComponent();
 
+            DependencyService.Register<IManifestResourceService, ManifestResourceService>();
             DependencyService.Register<ITPGService, TPGService>();
             DependencyService.Register<MainViewModel>();
 

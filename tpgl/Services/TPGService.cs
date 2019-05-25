@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using tpgl.Models;
 using System.Linq;
 using Polly;
+using Xamarin.Forms;
 
 namespace tpgl.Services
 {
@@ -12,6 +13,7 @@ namespace tpgl.Services
     {
         private readonly string apiKey;
         private readonly HttpClient client;
+        private readonly IManifestResourceService _manifestResourceService;
 
         public TPGService()
         {
@@ -19,6 +21,7 @@ namespace tpgl.Services
             this.client.BaseAddress = new Uri(Helpers.Secrets.APIEndpoint);
             this.client.Timeout = TimeSpan.FromSeconds(20);
             this.apiKey = Helpers.Secrets.APIKey;
+            this._manifestResourceService = DependencyService.Resolve<IManifestResourceService>();
         }
 
         public async Task<GetNextDeparturesResponse> GetNextDepartures(Stop stop)
@@ -48,6 +51,7 @@ namespace tpgl.Services
 
         public async Task<StopsResponse> GetStops()
         {
+            string stopsFromManifest = this._manifestResourceService.GetManifestResource("tpgl.Resources.stops.json");
             string stopsResponse = await this.client.GetStringAsync("GetStops?key=" + this.apiKey);
             var stops = JsonConvert.DeserializeObject<StopsResponse>(stopsResponse);
             stops.Stops = stops.Stops.OrderBy(s => s.StopName).ToList();
